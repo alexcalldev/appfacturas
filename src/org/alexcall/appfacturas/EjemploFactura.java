@@ -31,6 +31,6 @@ public class EjemploFactura {
             System.out.println();
             entrada.nextLine();
         }
-        System.out.println(facturas.generarDetalle());
+        System.out.println(facturas);
     }
 }
