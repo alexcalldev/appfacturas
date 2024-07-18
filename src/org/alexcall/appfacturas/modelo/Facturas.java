@@ -8,8 +8,8 @@ public class Facturas {
     private String descripcion;
     private Date fecha;
     private Cliente cliente;
-    private ItemFacturas[] itemFacturas;
-    private int indiceFacturas;
+    private ItemFacturas[] items;
+    private int indiceItems;
 
     public static final int MAX_ITEMS = 10;
     public static int ultimoFolio;
@@ -19,7 +19,7 @@ public class Facturas {
     public Facturas(String descripcion, Cliente cliente) {
         this.cliente = cliente;
         this.descripcion = descripcion;
-        this.itemFacturas = new ItemFacturas[MAX_ITEMS];
+        this.items = new ItemFacturas[MAX_ITEMS];
         this.folio = ++ultimoFolio;
         this.fecha = new Date();
     }
@@ -53,22 +53,19 @@ public class Facturas {
     }
 
     public ItemFacturas[] getItemFacturas() {
-        return itemFacturas;
+        return items;
     }
 
     public void addItemFacturas(ItemFacturas item) {
-        if (indiceFacturas < MAX_ITEMS) {
-            this.itemFacturas[indiceFacturas++] = item;
+        if (indiceItems < MAX_ITEMS) {
+            this.items[indiceItems++] = item;
         }
     }
 
     public float calcularTotal() {
         float total = 0.0f;
-        for (ItemFacturas item : this.itemFacturas) {
-            if (item == null) {
-                continue;
-            }
-            total += item.calcularImporte();
+        for (int i=0; i < indiceItems; i++) {
+            total += this.items[i].calcularImporte();
         }
         return total;
     }
@@ -89,16 +86,12 @@ public class Facturas {
                 .append(df.format(this.fecha))
                 .append("\n")
                 .append("\n#\tNombre\t$\tCant.\tTotal\n");
-        for (ItemFacturas item : this.itemFacturas) {
-            if(item == null){
-                continue;
-            }
-            sb.append(item)
+        for (int i=0; i < indiceItems; i++) {
+            sb.append(this.items[i].toString())
                     .append("\n");
         }
         sb.append("Gran Total: ")
                 .append(calcularTotal());
-
         return sb.toString();
     }
 
